@@ -42,39 +42,52 @@ class racksController {
       }
     });
   };
-  static getRacksDataBySection = (req, res) => {
+  // static getRacksDataBySection = (req, res) => {
+  //   // READ
+  //   Racks.find({ section: req.params.id }, (err, racks) => {
+  //     if (err) {
+  //       console.log(err);
+  //       res.status(500).json({
+  //         message: "Unable To Get Racks Data By Section",
+  //         error: err,
+  //       });
+  //     } else {
+  //       res.status(200).json({
+  //         message: "Success To Get Racks Data By Section",
+  //         racks,
+  //       });
+  //     }
+  //   });
+  // };
+
+  static getRacksDataBySection = async (req, res) => {
     // READ
-    Racks.find({ section: req.params.id }, (err, racks) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Racks Data By Section",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success To Get Racks Data By Section",
-          racks,
-        });
-      }
-    });
+    try {
+      const racksSection = await Racks.findOne({ section: req.params.id });
+      res.status(200).json({
+        message: "Success Get Data By Section",
+        data: racksSection,
+      });
+    } catch (error) {
+      console.log(err);
+    }
   };
-  static getRacksDataByFloor = (req, res) => {
+
+  static getRacksDataByFloor = async (req, res) => {
     // READ
-    Racks.find({ floor: req.params.id }, (err, racks) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Racks Data By Floor",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success To Get Racks Data By Floor",
-          racks,
-        });
-      }
-    });
+    try {
+      const racksByFloor = await Racks.find({ floor: req.params.id });
+      res.status(200).json({
+        message: "Success To Get Racks Data By Floor",
+        data: racksByFloor,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Unable To Get Racks Data By Floor",
+        error: error,
+      });
+    }
   };
   static updateRacksDataById = (req, res) => {
     // UPDATE

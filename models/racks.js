@@ -9,7 +9,7 @@ const racksSchema = new Schema(
       required: true,
       validate: {
         validator: (v) => {
-          return /[A-Z]/.test(v);
+          return /^[A-Z]/.test(v);
         },
       },
     },
