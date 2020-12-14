@@ -1,64 +1,49 @@
 const Racks = require("../models/racks");
 
 class racksController {
-  static createRacksData = (req, res) => {
-    Racks.create(
-      // CREATE
-      {
+  static createRacksData = async (req, res) => {
+    try {
+      const createRacksData = await Racks.create({
         section: req.body.section,
         number: req.body.number,
         floor: req.body.floor,
-      },
-      (err, racks) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable Create Racks Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success Create Racks Data",
-            racks,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to create data",
+        data: createRacksData,
+      });
+    } catch (error) {
+      next(error);
+      // console.log(error);
+      // res.status(500).json({
+      //   message: "Unable to create data",
+      //   error: error,
+      // });
+    }
   };
-  static getRacksData = (req, res) => {
-    // READ
-    Racks.find({}, (err, racks) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Racks Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success To Get Racks Data",
-          racks,
-        });
-      }
-    });
+  static getRacksData = async (req, res, next) => {
+    try {
+      const getRacksData = await Racks.find();
+      res.status(200).json({
+        message: "Success to get data",
+        data: getRacksData,
+      });
+    } catch (error) {
+      next(new Error("cannot get racks data")); // => send error to error handling
+    }
   };
-  // static getRacksDataBySection = (req, res) => {
-  //   // READ
-  //   Racks.find({ section: req.params.id }, (err, racks) => {
-  //     if (err) {
-  //       console.log(err);
-  //       res.status(500).json({
-  //         message: "Unable To Get Racks Data By Section",
-  //         error: err,
-  //       });
-  //     } else {
-  //       res.status(200).json({
-  //         message: "Success To Get Racks Data By Section",
-  //         racks,
-  //       });
-  //     }
-  //   });
-  // };
+
+  //Pake data dari Middleware
+  static getRacksDataByMw = async (req, res, next) => {
+    try {
+      res.status(200).json({
+        firstName: req.person.firstName,
+        lastName: req.person.lastName,
+      });
+    } catch (error) {
+      next(new Error("cannot get racks data")); // => send error to error handling
+    }
+  };
 
   static getRacksDataBySection = async (req, res) => {
     // READ
@@ -89,47 +74,43 @@ class racksController {
       });
     }
   };
-  static updateRacksDataById = (req, res) => {
-    // UPDATE
-    Racks.updateOne(
-      {
+  static updateRacksDataById = async (req, res) => {
+    try {
+      const updateRacksDataById = await Racks.updateOne({
         id: req.params.id,
         section: req.body.section,
         number: req.body.number,
         floor: req.body.floor,
-      },
-      (err, racks) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable To Update Racks Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success To Update Racks Data",
-            racks,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to update data",
+        data: updateRacksDataById,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Unable to update data",
+        error: error,
+      });
+    }
   };
 
-  static deleteRacksDataBySection = (req, res) => {
-    Racks.deleteOne({ section: req.params.section }, (err, racks) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Delete Racks Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success To Delete Racks Data",
-          racks,
-        });
-      }
-    });
+  static deleteRacksDataBySection = async (req, res) => {
+    try {
+      const deleteRacksDataBySection = await Racks.deleteOne({
+        section: req.params.section,
+      });
+      res.status(200).json({
+        message: "Success to delete racks data",
+        data: deleteRacksDataBySection,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Unable to delete racks data",
+        error: error,
+      });
+    }
   };
 }
 

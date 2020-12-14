@@ -1,87 +1,61 @@
 const BorrowBooks = require("../models/borrow_books");
 
 class borrowBooksController {
-  static addData = (req, res) => {
-    BorrowBooks.create(
-      {
+  static addData = async (req, res) => {
+    try {
+      const addData = await BorrowBooks.create(req.body);
+      res.status(200).json({
+        message: "Success to add data",
+        data: addData,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Unable to add data",
+        error: error,
+      });
+    }
+  };
+  static getAllData = async (req, res, next) => {
+    try {
+      const getAllData = await BorrowBooks.find();
+      res.status(200).json({
+        message: "Success to get data",
+        data: getAllData,
+      });
+    } catch (error) {
+      next(new Error("Unable to get all data"));
+    }
+  };
+  static updateDataById = async (req, res, next) => {
+    try {
+      const updateDataById = await BorrowBooks.updateOne({
         borrower_name: req.body.borrower_name,
         books_id: req.body.books_id,
         is_returned: req.body.is_returned,
         borrowed_date: req.body.borrowed_date,
         returned_date: req.body.returned_date,
-      },
-      (err, borrowBooks) => {
-        if (err) {
-          console.log(err);
-          res.status(404).json({
-            message: "Unable To Add Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success To Add Data",
-            borrowBooks,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to update data",
+        data: updateDataById,
+      });
+    } catch (error) {
+      next(new Error("Unable to update data"));
+    }
   };
-  static getAllData = (req, res) => {
-    BorrowBooks.find({}, (err, borrowBooks) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success Get Data",
-          borrowBooks,
-        });
-      }
-    });
-  };
-  static updateDataById = (req, res) => {
-    BorrowBooks.updateOne(
-      {
-        borrower_name: req.body.borrower_name,
-        books_id: req.params.id,
-        is_returned: req.body.is_returned,
-        borrowed_date: req.body.borrowed_date,
-        returned_date: req.body.returned_date,
-      },
-      (err, borrowBooks) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable To Update Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success To Update Data",
-            borrowBooks,
-          });
-        }
-      }
-    );
-  };
-  static deleteDataByName = (req, res) => {
-    BorrowBooks.deleteOne({ borrower_name: req.params.name }, (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Delete Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success To Delete Data",
-          result,
-        });
-      }
-    });
+  static deleteDataByName = async (req, res, next) => {
+    try {
+      const deleteDataByName = await BorrowBooks.deleteOne({
+        borrower_name: req.params.name,
+      });
+      res.status(200).json({
+        message: "Success to delete data",
+        data: deleteDataByName,
+      });
+    } catch (error) {
+      next(new Error("Unable to delete data"));
+    }
   };
 }
 

@@ -1,127 +1,85 @@
 const Books = require("../models/books");
 
 class booksController {
-  static addBooksData = (req, res) => {
-    Books.create(
-      {
+  static addBooksData = async (req, res, next) => {
+    try {
+      const addBooksData = await Books.create({
         author: req.body.author,
         title: req.body.title,
         published_year: req.body.published_year,
-      },
-      (err, books) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable Add Books Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success Adding Books Data",
-            books,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to add data",
+        data: addBooksData,
+      });
+    } catch (error) {
+      next(new Error("Unable to add data"));
+    }
   };
-  static getBooksData = (req, res) => {
-    Books.find({}, (err, books) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Books Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success Adding Books Data",
-          books,
-        });
-      }
-    });
+  static getBooksData = async (req, res, next) => {
+    try {
+      const getBooksData = await Books.find();
+      res.status(200).json({
+        message: "Success to get data",
+        data: getBooksData,
+      });
+    } catch (error) {
+      next(new Error("Unable to get data"));
+    }
   };
-  static getBooksDataByTitle = (req, res) => {
-    Books.find({ title: req.params.title }, (err, books) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          message: "Unable To Get Books Data",
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "Success Adding Books Data",
-          books,
-        });
-      }
-    });
+  static getBooksDataByTitle = async (req, res, next) => {
+    try {
+      const getBooksDataByTitle = await Books.find({ title: req.params.title });
+      res.status(200).json({
+        message: "Success to get data by title",
+        data: getBooksDataByTitle,
+      });
+    } catch (error) {
+      next(new Error("Unable to get data by title"));
+    }
   };
-  static updateBooksDataById = (req, res) => {
-    Books.updateOne(
-      {
+  static updateBooksDataById = async (req, res, next) => {
+    try {
+      const updateBooksDataById = await Books.updateOne({
         _id: req.params.id,
         author: req.body.author,
         title: req.body.title,
         published_year: req.body.published_year,
         racks_id: req.params.id,
-      },
-      (err, books) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable To Update Books Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success To Update Books Data",
-            books,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to update data by id",
+        data: updateBooksDataById,
+      });
+    } catch (error) {
+      next(new Error("Unable to update data by id"));
+    }
   };
-  static deleteBooksDataById = (req, res) => {
-    Books.deleteOne(
-      {
+  static deleteBooksDataById = async (req, res, next) => {
+    try {
+      const deleteBooksDataById = await Books.deleteOne({
         _id: req.params.id,
-      },
-      (err, books) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable To Delete Books Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success Delete Books Data",
-            books,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to delete data by id",
+        data: deleteBooksDataById,
+      });
+    } catch (error) {
+      next(new Error("Unable to delete data by id"));
+    }
   };
-  static deleteBooksDataByTitle = (req, res) => {
-    Books.deleteOne(
-      {
+  static deleteBooksDataByTitle = async (req, res) => {
+    try {
+      const deleteBooksDataByTitle = await Books.deleteOne({
         title: req.params.title,
-      },
-      (err, books) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            message: "Unable To Delete Books Data",
-            error: err,
-          });
-        } else {
-          res.status(200).json({
-            message: "Success Delete Books Data",
-            books,
-          });
-        }
-      }
-    );
+      });
+      res.status(200).json({
+        message: "Success to delete data by title",
+        data: deleteBooksDataByTitle,
+      });
+    } catch (error) {
+      next(new Error("Unable to delete data by title"));
+    }
   };
 }
 

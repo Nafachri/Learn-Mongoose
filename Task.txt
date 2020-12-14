@@ -3,4 +3,12 @@ Buat Regex :
     2. books [x]
     3. borrow-books
 Buat Validation [x]
-Ganti Controller => async await
+Ganti Controller => async await [x]
+
+Custom Data => Returned Date harus lebih besar dari Borrow Date
+Untuk mengupdate default nya mongoose tidak melakukan validation, 
+maka harus kasih option runValidators set true, set nya di Controller
+misal : borrowBooks.update({}, {}, {runValidators: true}) => taro di update
+
+
+53.00 => Authorization

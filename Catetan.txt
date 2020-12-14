@@ -1,0 +1,44 @@
+1. Middleware  :
+        Adalah sebuah fungsi yang dijalankan sebelum masuk ke route kita.
+        Memiliki 3 argumen (req, res, next).
+        Bisa memodifikasi req, dan res yang kita miliki. Next() untuk melanjutkan route setelah middleware.
+
+2. Error Handling Middleware : 
+        Memiliki 4 argumen (err, req, res, next).
+        Posisi error handler harus berada pada routing paling bawah, karena untuk menangkap semua routing dan mau kita apain errornya. bisa taro di Index.js paling bawah
+        Error harus kita kirim pakai function next(). / next(new Error("")) => menulis error apa yang kita inginkan
+        Harus pake trycatch
+
+        =>
+
+3. Authentication Middlerware : 
+        Memastikan yang akses aplikasi kita itu benar user kita atau bukan
+        
+4. Authorization Middleware : 
+        Memastikan apakah user ini boleh melakukan sesuatu
+
+5. Bcryptjs (https://www.npmjs.com/package/bcryptjs) : 
+        Bantuan untuk meng encrypt(menyamarkan/merahasiakan data) password agar bentuknya tidak plain text
+        => hashSync : merubah password plain menjadi encrypt
+                const hashPassword = bcrypt.hashSync(our_plain_password, Salt(how much we want to encrypt our password));
+        => Salt : berupa angka, dan memiliki nilai default 10, maki banyak makin susah di crack sama orang.
+                  kekurangannya makin banyak, makin berat memory kita
+        => Compare Bcrypt => 
+                membandingkan password plain kita dengan hasil encrypt (true/false)
+                console.log(bcrypt.compareSync(plainPassword, hasil_encrypt));
+                hasil hash yang akan kita simpan pada database kita
+                lalu ubah cara penyimpanan password kita di controller menggunakan bcrype.hashSync(password, 10)
+
+6. JWT(Json Web Token) => sebagai tanda pengenal user. =>JWT.io =>package : npm jwt
+
+        Installation : 
+                1. npm jsonwebtoken
+                2. panggil di controller , di proses login kita. dibuat setelah user sudah valid
+
+        Header => Algoritma dan tipe token => biasanya default gadiubah2
+        Payload => Data
+        Verify Signature => memvalidasi, data di dalamnya benar atau salah
+
+        yang dimasukkan kedalam jwt biasanya adalah data yang unik ex: id/username
+        
+        expired ditambahin pas kit abuat pwt di login, setelah secret {expiresIn: "15s"}
